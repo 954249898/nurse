@@ -23,11 +23,29 @@ let routes = [
         name: '',
         hidden: true
     },
-    //{ path: '/main', component: Main },
+    {
+        path: '/index',
+        component: NotFound,
+        name: '',
+        hidden: true
+    },
     {
         path: '/',
         component: Home,
-        name: '导航一',
+        name: '',
+        iconCls: 'fa fa-address-card',
+        leaf: true,//只有一个节点
+        role:1,
+        children: [
+            { path: '/page6', component: Page6, name: '发送订单' }
+        ]
+    },
+    //{ path: '/main', component: Main },
+    {
+        path: '/',
+        role:1,
+        component: Home,
+        name: '护工信息',
         iconCls: 'el-icon-message',//图标样式class
         children: [
             { path: '/main', component: Main, name: '主页', hidden: true },
@@ -36,33 +54,27 @@ let routes = [
             { path: '/user', component: user, name: '列表' },
         ]
     },
+
     {
         path: '/',
+        role:1,
         component: Home,
-        name: '导航二',
+        name: '系统管理',
         iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/page4', component: Page4, name: '页面4' },
-            { path: '/page5', component: Page5, name: '页面5' }
+            { path: '/page4', component: Page4, name: '奖惩管理' },
+            { path: '/page5', component: Page5, name: '排班管理' },
+            { path: '/page5', component: Page5, name: '培训管理' }
         ]
     },
     {
         path: '/',
+        role:1,
         component: Home,
-        name: '',
-        iconCls: 'fa fa-address-card',
-        leaf: true,//只有一个节点
-        children: [
-            { path: '/page6', component: Page6, name: '导航三' }
-        ]
-    },
-    {
-        path: '/',
-        component: Home,
-        name: 'Charts',
+        name: '信息统计',
         iconCls: 'fa fa-bar-chart',
         children: [
-            { path: '/echarts', component: echarts, name: 'echarts' }
+            { path: '/statistics', component: echarts, name: '护工信息统计',role:1 }
         ]
     },
     {
