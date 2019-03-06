@@ -1,6 +1,6 @@
 <template>
 	<section>
-		main
+		用户
 	</section>
 </template>
 

@@ -13,8 +13,7 @@
 				<el-dropdown trigger="hover">
 					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
 					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item>我的消息</el-dropdown-item>
-						<el-dropdown-item>设置</el-dropdown-item>
+						<el-dropdown-item @click.native="showNotice">公告通知</el-dropdown-item>
 						<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
@@ -75,8 +74,9 @@
 	export default {
 		data() {
 			return {
-				sysName:'VUEADMIN',
+				sysName:'后台管理',
 				collapsed:false,
+				isShow:false,
 				sysUserName: '',
 				sysUserAvatar: '',
 				form: {
@@ -102,6 +102,9 @@
 				//console.log('handleclose');
 			},
 			handleselect: function (a, b) {
+			},
+			showNotice:function(){
+				this.isShow = true
 			},
 			//退出登录
 			logout: function () {

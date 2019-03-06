@@ -61,8 +61,8 @@
                   type: 'error'
                 });
               } else {
-                sessionStorage.setItem('user', JSON.stringify(user));
-                this.$router.push({ path: '/table' });
+                sessionStorage.setItem('USER-INFO', JSON.stringify(user));
+                this.$router.push({ path: '/order' });
               }
             });
           } else {
