@@ -16,7 +16,9 @@
 </template>
 
 <script>
-  import { requestLogin } from '../api/api';
+  import {
+    requestLogin
+  } from '../api/api';
   //import NProgress from 'nprogress'
   export default {
     data() {
@@ -27,12 +29,18 @@
           checkPass: '123456'
         },
         rules2: {
-          account: [
-            { required: true, message: '请输入账号', trigger: 'blur' },
+          account: [{
+              required: true,
+              message: '请输入账号',
+              trigger: 'blur'
+            },
             //{ validator: validaePass }
           ],
-          checkPass: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
+          checkPass: [{
+              required: true,
+              message: '请输入密码',
+              trigger: 'blur'
+            },
             //{ validator: validaePass2 }
           ]
         },
@@ -50,11 +58,18 @@
             //_this.$router.replace('/table');
             this.logining = true;
             //NProgress.start();
-            var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
+            var loginParams = {
+              username: this.ruleForm2.account,
+              password: this.ruleForm2.checkPass
+            };
             requestLogin(loginParams).then(data => {
               this.logining = false;
               //NProgress.done();
-              let { msg, code, user } = data;
+              let {
+                msg,
+                code,
+                user
+              } = data;
               if (code !== 200) {
                 this.$message({
                   message: msg,
@@ -62,7 +77,16 @@
                 });
               } else {
                 sessionStorage.setItem('USER-INFO', JSON.stringify(user));
-                this.$router.push({ path: '/order' });
+                if (user.role && user.role == 1) {
+                  this.$router.push({
+                    path: '/order'
+                  });
+                }
+                if (user.role && user.role == 3) {
+                  this.$router.push({
+                    path: '/customer'
+                  });
+                }
               }
             });
           } else {
@@ -73,7 +97,6 @@
       }
     }
   }
-
 </script>
 
 <style lang="scss" scoped>

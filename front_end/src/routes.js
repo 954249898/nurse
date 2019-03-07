@@ -6,6 +6,7 @@ import Incentive from './views/systemadmin/incentive.vue'
 import Train from './views/systemadmin/train.vue'
 import Order from './views/order/index.vue'
 import Empployee from './views/employeeinfo/index.vue'
+import Notification from './views/notification/index.vue'
 import Statistics from './views/statistics/index.vue'
 import Customer from './views/Customer.vue'
 
@@ -29,7 +30,7 @@ let routes = [
         hidden: true
     },
     {
-        path: '/Customer',
+        path: '/customer',
         component: Customer,
         role: 3,
         name: '',
@@ -56,6 +57,17 @@ let routes = [
         role: 1,
         children: [
             { path: '/nursing/info', component: Empployee, name: '护工信息' },
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '',
+        iconCls: 'fa fa-address-card',
+        leaf: true,//只有一个节点
+        role: 1,
+        children: [
+            { path: '/notification', component: Notification, name: '公告通知' },
         ]
     },
 

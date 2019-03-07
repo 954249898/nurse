@@ -7,15 +7,12 @@
             <el-col :span="12">
                 <div id="chartTest" style="width:100%; height:400px;"></div>
             </el-col>
-            <el-col :span="12">
+            <!-- <el-col :span="12">
                 <div id="chartAge" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="12">
+            </el-col> -->
+            <!-- <el-col :span="12">
                 <div id="chartSalary" style="width:100%; height:400px;"></div>
-            </el-col>
-            <el-col :span="24">
-                <a href="http://echarts.baidu.com/examples.html" target="_blank" style="float: right;">more>></a>
-            </el-col>
+            </el-col> -->
         </el-row>
     </section>
 </template>
@@ -118,7 +115,7 @@
                     legend: {
                         orient: 'vertical',
                         left: 'left',
-                        data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                        data: ['2k以下', '2k-3k', '3k-5k', '5k-8k', '8k以上']
                     },
                     series: [{
                         name: '访问来源',
@@ -127,23 +124,23 @@
                         center: ['50%', '60%'],
                         data: [{
                                 value: 335,
-                                name: '直接访问'
+                                name: '2k以下'
                             },
                             {
                                 value: 310,
-                                name: '邮件营销'
+                                name: '2k-3k'
                             },
                             {
                                 value: 234,
-                                name: '联盟广告'
+                                name: '3k-5k'
                             },
                             {
                                 value: 135,
-                                name: '视频广告'
+                                name: '5k-8k'
                             },
                             {
                                 value: 1548,
-                                name: '搜索引擎'
+                                name: '8k以上'
                             }
                         ],
                         itemStyle: {
@@ -211,9 +208,9 @@
             },
             drawCharts() {
                 this.drawColumnChart()
-                this.drawAgeChart()
+                // this.drawAgeChart()
                 this.drawSalaryChart()
-                this.drawPieChart()
+                // this.drawPieChart()
             },
         },
         mounted: function() {
