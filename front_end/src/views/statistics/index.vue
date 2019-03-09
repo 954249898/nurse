@@ -33,17 +33,17 @@
                 this.chartOrder = echarts.init(document.getElementById('chartOrder'));
                 this.chartOrder.setOption({
                     title: {
-                        text: '订单数Top10'
+                        text: '年龄统计'
                     },
                     tooltip: {},
                     xAxis: {
-                        data: ["测试1", "测试1", "测试1", "测试1", "测试1", "测试1", "测试1", "测试1", "测试1", "测试1"]
+                        data: ["25岁以下", "25岁-30岁", "30岁-45岁", "45岁-50岁", "50岁以上"]
                     },
                     yAxis: {},
                     series: [{
                         name: '销量',
                         type: 'bar',
-                        data: [15, 20, 36, 10, 40, 50, 66, 70, 80, 90]
+                        data: [15, 20, 36, 10, 40]
                     }]
                 });
             },

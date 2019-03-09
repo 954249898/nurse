@@ -1,11 +1,12 @@
 <template>
-    <p class="page-container">顾客信息</p>
+    <div id="app">
+        <el-container style="height:100%">
+            <el-aside width="200px">Aside</el-aside>
+            <el-container>
+                <el-header>Header</el-header>
+                <el-main>Main</el-main>
+                <el-footer>Footer</el-footer>
+            </el-container>
+        </el-container>
+    </div>
 </template>
-
-<style lang="scss" scoped>
-    .page-container {
-        font-size: 20px;
-        text-align: center;
-        color: rgb(192, 204, 218);
-    }
-</style>
