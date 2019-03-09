@@ -1,4 +1,4 @@
 const config = {
-    dbHost:'mongodb://localhost:27017/admin_group'
+    dbHost:'mongodb://123.207.72.95:27018/admin_group'
 }
 module.exports = config;
