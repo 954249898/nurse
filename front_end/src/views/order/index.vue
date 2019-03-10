@@ -17,17 +17,21 @@
 			</el-table-column>
 			<el-table-column prop="name" label="姓名" width="120" sortable>
 			</el-table-column>
-			<el-table-column prop="birth" label="时间" width="150" >
+			<el-table-column prop="phone" label="手机号" width="120" sortable>
 			</el-table-column>
-			<el-table-column prop="age" label="项目" width="150" >
+			<el-table-column prop="time" label="时间" width="150" >
 			</el-table-column>
-			<el-table-column prop="addr" label="地址" min-width="180" >
+			<el-table-column prop="item" label="项目" width="150" >
 			</el-table-column>
-			<el-table-column prop="sex" label="备注" min-width="120" >
+			<el-table-column prop="status" label="状态" width="100" >
+			</el-table-column>
+			<el-table-column prop="address" label="地址" min-width="180" >
+			</el-table-column>
+			<el-table-column prop="memo" label="备注" min-width="120" >
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
-							<el-button size="small" @click="handleEdit(scope.$index, scope.row)">发送</el-button>
+							<el-button size="small" @click="sendOrder(scope.$index, scope.row)">发送</el-button>
 							<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 </template>
 			</el-table-column>
@@ -39,7 +43,7 @@
 			</el-pagination>
 		</el-col>
 
-		<!--编辑界面-->
+		<!--发送界面-->
 		<el-dialog title="发送订单" v-model="editFormVisible" :close-on-click-modal="false">
 			<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="时间">
@@ -160,7 +164,8 @@
 				}).catch(() => {});
 			},
 			//显示编辑界面
-			handleEdit: function(index, row) {
+			sendOrder: function(index, row) {
+				console.log(row)
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},

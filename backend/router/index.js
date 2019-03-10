@@ -6,6 +6,7 @@ let employee_httphandler = require('../src/modules/employee/index')
 let notification_httphandler = require('../src/modules/notification/index')
 let order_httphandler = require('../src/modules/order/index')
 let work_httphandler = require('../src/modules/work/index')
+let train_httphandler = require('../src/modules/train/index')
 
 //订单管理
 router.route('/order')
@@ -91,7 +92,20 @@ router.route('/work')
     .delete(function (req,res,next) {
         work_httphandler.deleteLib(req,res,next)
     })
-
+//培训管理
+router.route('/train')
+    .get(function(req,res,next){
+        train_httphandler.queryGroup(req,res,next)
+    })
+    .put(function (req,res,next) {
+        train_httphandler.updateLib(req,res,next)
+    })
+    .post(function (req,res,next) {
+        train_httphandler.addLib(req,res,next)
+    })
+    .delete(function (req,res,next) {
+        train_httphandler.deleteLib(req,res,next)
+    })
 
 
 

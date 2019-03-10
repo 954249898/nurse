@@ -21,11 +21,11 @@
 			</el-table-column> -->
 			<el-table-column type="index" width="60">
 			</el-table-column>
-			<el-table-column prop="name" label="培训名称" width="120" sortable>
+			<el-table-column prop="name" label="培训名称" width="120" >
 			</el-table-column>
-			<el-table-column prop="sex" label="培训开始时间" width="100" :formatter="formatSex" sortable>
+			<el-table-column prop="sex" label="培训开始时间" width="120" :formatter="formatSex" >
 			</el-table-column>
-			<el-table-column prop="orderNumber" label="培训结束时间" width="100" :formatter="formatSex" sortable>
+			<el-table-column prop="orderNumber" label="培训结束时间" width="120" :formatter="formatSex" >
 			</el-table-column>
 			<el-table-column prop="phone" label="培训类型" width="100"  >
 			</el-table-column>
