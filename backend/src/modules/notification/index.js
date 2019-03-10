@@ -1,6 +1,6 @@
 let db = require('../../database/db.js')
 let notification_schema = require('../../database/model/notification')
-let notification_model = db.model('user', notification_schema)
+let notification_model = db.model('notification', notification_schema)
 
 
 let queryGroup = function (req, res, next) {

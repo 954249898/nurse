@@ -93,7 +93,7 @@
 				let url = this.$Host + '/order'
 				this.$confirm('确认删除该订单吗?', '提示', {
 					type: 'warning'
-				}).then(() => {
+				}).then((action) => {
 					this.listLoading = true;
 					if (action == 'confirm') {
 						let data = {

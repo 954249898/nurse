@@ -24,16 +24,15 @@ const router = new VueRouter({
 
 //全局路由导航
 router.beforeEach((to, from, next) => {
-  next(0)
   // if (to.path == '/login') {
   //   sessionStorage.removeItem('user');
   // }
-  // let user = JSON.parse(sessionStorage.getItem('USER-INFO'));
-  // if (!user && to.path != '/login') {
-  //   next({ path: '/login' })
-  // } else {
-  //   next()
-  // }
+  let user = JSON.parse(sessionStorage.getItem('USER-INFO'));
+  if (!user && to.path != '/login') {
+    next({ path: '/login' })
+  } else {
+    next()
+  }
 })
 
 new Vue({
