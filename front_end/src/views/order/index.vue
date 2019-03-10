@@ -7,12 +7,12 @@
 					<el-input v-model="filters.name" placeholder="姓名"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+					<el-button type="primary" v-on:click="getOrderList">查询</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
 		<!--列表-->
-		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+		<el-table :data="orderList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="index" width="60">
 			</el-table-column>
 			<el-table-column prop="name" label="姓名" width="120" sortable>
@@ -66,21 +66,13 @@
 
 <script>
 	import util from '../../common/js/util'
-	//import NProgress from 'nprogress'
-	import {
-		getUserListPage,
-		removeUser,
-		batchRemoveUser,
-		editUser,
-		addUser
-	} from '../../api/api';
 	export default {
 		data() {
 			return {
 				filters: {
 					name: ''
 				},
-				users: [],
+				orderList: [],
 				total: 0,
 				page: 1,
 				listLoading: false,
@@ -122,24 +114,27 @@
 				}
 			}
 		},
+		created:function(){
+
+		},
 		methods: {
 			handleCurrentChange(val) {
 				this.page = val;
-				this.getUsers();
+				this.getOrderList();
 			},
 			//获取用户列表
-			getUsers() {
-				let para = {
+			getOrderList() {
+				let param = {
 					page: this.page,
 					name: this.filters.name
 				};
+				let that = this
 				this.listLoading = true;
-				//NProgress.start();
-				getUserListPage(para).then((res) => {
-					this.total = res.data.total;
-					this.users = res.data.users;
-					this.listLoading = false;
-					//NProgress.done();
+				let url = this.$Host + '/order'
+				this.$axios.get(url).then((res) => {
+					that.total = res.data.total;
+					that.users = res.data.users;
+					that.listLoading = false;
 				});
 			},
 			//删除
@@ -159,7 +154,7 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.getOrderList();
 					});
 				}).catch(() => {});
 			},
@@ -187,7 +182,7 @@
 								});
 								this.$refs['editForm'].resetFields();
 								this.editFormVisible = false;
-								this.getUsers();
+								this.getOrderList();
 							});
 						});
 					}
@@ -211,7 +206,7 @@
 								});
 								this.$refs['addForm'].resetFields();
 								this.addFormVisible = false;
-								this.getUsers();
+								this.getOrderList();
 							});
 						});
 					}
@@ -238,13 +233,10 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.getOrderList();
 					});
 				}).catch(() => {});
 			}
-		},
-		mounted() {
-			this.getUsers();
 		}
 	}
 </script>

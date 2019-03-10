@@ -8,8 +8,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="@types/express" level="application" />
-    <orderEntry type="library" name="@types/activex-adodb" level="application" />
-    <orderEntry type="library" name="node" level="application" />
   </component>
 </module>
