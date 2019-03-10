@@ -7,7 +7,7 @@
 					<el-input v-model="filters.name" placeholder="姓名"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+					<el-button type="primary" v-on:click="queryGroup">查询</el-button>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="handleAdd">新增</el-button>
@@ -16,7 +16,7 @@
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+		<el-table :data="tableData" highlight-current-row v-loading="listLoading" style="width: 100%;">
 			<!-- <el-table-column type="selection" width="55">
 			</el-table-column> -->
 			<el-table-column type="index" width="60">
@@ -119,7 +119,7 @@
 				filters: {
 					name: ''
 				},
-				users: [],
+				tableData: [],
 				total: 0,
 				page: 1,
 				listLoading: false,
@@ -160,6 +160,9 @@
 
 			}
 		},
+		created:function(){
+			this.queryGroup()
+		},
 		methods: {
 			//性别显示转换
 			formatSex: function (row, column) {
@@ -167,22 +170,26 @@
 			},
 			handleCurrentChange(val) {
 				this.page = val;
-				this.getUsers();
+				this.queryGroup();
 			},
-			//获取用户列表
-			getUsers() {
-				let para = {
-					page: this.page,
-					name: this.filters.name
-				};
+			//获取排班列表
+			queryGroup() {
+				let that = this
 				this.listLoading = true;
-				//NProgress.start();
-				getUserListPage(para).then((res) => {
-					this.total = res.data.total;
-					this.users = res.data.users;
-					this.listLoading = false;
-					//NProgress.done();
-				});
+				let url = this.$Host + '/work'
+				this.$axios.get(url)
+					.then((res) => {
+						that.listLoading = false
+						if (res.data.success) {
+							res.data.data.forEach(item => {
+								item.time = this.$moment(item.time).format('MM-DD HH:mm:ss')
+								that.tableData.push(item)
+							})
+						}
+					})
+					.catch(err => {
+						console.error(err)
+					});
 			},
 			//删除
 			handleDel: function (index, row) {
@@ -199,7 +206,7 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.queryGroup();
 					});
 				}).catch(() => {
 
@@ -239,7 +246,7 @@
 								});
 								this.$refs['editForm'].resetFields();
 								this.editFormVisible = false;
-								this.getUsers();
+								this.queryGroup();
 							});
 						});
 					}
@@ -263,7 +270,7 @@
 								});
 								this.$refs['addForm'].resetFields();
 								this.addFormVisible = false;
-								this.getUsers();
+								this.queryGroup();
 							});
 						});
 					}
@@ -288,20 +295,12 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.queryGroup();
 					});
 				}).catch(() => {
 
 				});
 			}
 		},
-		mounted() {
-			this.getUsers();
-		}
 	}
-
 </script>
-
-<style scoped>
-
-</style>

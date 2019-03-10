@@ -4,7 +4,7 @@ let notification_model = db.model('user', notification_schema)
 
 
 let queryGroup = function (req, res, next) {
-    user_model.find(function (err, data) {
+    notification_model.find(function (err, data) {
         if (err) {
             res.json({success: false, errMsg: err})
             return

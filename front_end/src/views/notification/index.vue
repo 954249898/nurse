@@ -7,25 +7,27 @@
 					<el-input v-model="filters.name" placeholder="姓名"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+					<el-button type="primary" v-on:click="queryGroup">查询</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
 		<!--列表-->
-		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+		<el-table :data="tableData" highlight-current-row v-loading="listLoading" style="width: 100%;">
 			<el-table-column type="index" width="60">
 			</el-table-column>
-			<el-table-column prop="birth" label="时间" width="150" >
+			<el-table-column prop="time" label="时间" width="150">
 			</el-table-column>
-			<el-table-column prop="type" label="类型" width="150" >
+			<el-table-column prop="type" label="类型" width="150">
 			</el-table-column>
-			<el-table-column prop="from" label="通知部门" min-width="180" >
+			<el-table-column prop="sender" label="发送人" min-width="180">
 			</el-table-column>
-			<el-table-column prop="content" label="内容" min-width="120" >
+			<el-table-column prop="receiver" label="接受人" min-width="180">
+			</el-table-column>
+			<el-table-column prop="content" label="内容" min-width="120">
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
-							<el-button size="small" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+								<el-button size="small" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
 </template>
 			</el-table-column>
 		</el-table>
@@ -38,7 +40,7 @@
 
 		<!--编辑界面-->
 		<el-dialog title="通知" v-model="editFormVisible" :close-on-click-modal="false">
-			<content>ddddddd</content>
+			<content></content>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click.native="editFormVisible = false">查看详情</el-button>
 			</div>
@@ -62,7 +64,7 @@
 				filters: {
 					name: ''
 				},
-				users: [],
+				tableData: [],
 				total: 0,
 				page: 1,
 				listLoading: false,
@@ -104,25 +106,32 @@
 				}
 			}
 		},
+		created: function() {
+			this.queryGroup()
+		},
 		methods: {
 			handleCurrentChange(val) {
 				this.page = val;
-				this.getUsers();
+				this.queryGroup();
 			},
-			//获取用户列表
-			getUsers() {
-				let para = {
-					page: this.page,
-					name: this.filters.name
-				};
+			//获取通知列表
+			queryGroup() {
+				let that = this
 				this.listLoading = true;
-				//NProgress.start();
-				getUserListPage(para).then((res) => {
-					this.total = res.data.total;
-					this.users = res.data.users;
-					this.listLoading = false;
-					//NProgress.done();
-				});
+				let url = this.$Host + '/notification'
+				this.$axios.get(url)
+					.then((res) => {
+						that.listLoading = false
+						if (res.data.success) {
+							res.data.data.forEach(item => {
+								item.time = this.$moment(item.time).format('MM-DD HH:mm:ss')
+								that.tableData.push(item)
+							})
+						}
+					})
+					.catch(err => {
+						console.error(err)
+					});
 			},
 			//删除
 			handleDel: function(index, row) {
@@ -141,7 +150,7 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.queryGroup();
 					});
 				}).catch(() => {});
 			},
@@ -168,7 +177,7 @@
 								});
 								this.$refs['editForm'].resetFields();
 								this.editFormVisible = false;
-								this.getUsers();
+								this.queryGroup();
 							});
 						});
 					}
@@ -192,7 +201,7 @@
 								});
 								this.$refs['addForm'].resetFields();
 								this.addFormVisible = false;
-								this.getUsers();
+								this.queryGroup();
 							});
 						});
 					}
@@ -219,14 +228,11 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.queryGroup();
 					});
 				}).catch(() => {});
 			}
 		},
-		mounted() {
-			this.getUsers();
-		}
 	}
 </script>
 

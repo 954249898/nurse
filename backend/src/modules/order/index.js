@@ -4,15 +4,27 @@ let order_model = db.model('order', order_schema)
 
 
 let queryGroup = function (req, res, next) {
-    order_model.find(function (err, data) {
-        if (err) {
-            res.json({success: false, errMsg: err})
-            return
+    order_model.find({}).sort({name: 'asc'}).exec(
+        function (err, data) {
+            if (err) {
+                res.json({success: false, errMsg: err})
+                return
+            }
+            res.json({success: true, data: data})
         }
-        res.json({success: true, data: data})
-    })
+    )
 }
 let updateLib = function (req, res, next) {
+    let data = req.body
+    console.log(data)
+    order_model.update({_id: data.id}, {status: data.status},
+        function (err, data) {
+            if (err) {
+                res.json({success: false, errMsg: err})
+                return
+            }
+            res.json({success: true, data: data})
+        })
 }
 let addLib = function (req, res, next) {
     let data = req.body

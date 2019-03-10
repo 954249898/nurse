@@ -8,14 +8,16 @@ import store from './vuex/store'
 import Vuex from 'vuex'
 import routes from './routes'
 import axios from 'axios';
+import moment from 'moment'
 import 'font-awesome/css/font-awesome.min.css'
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
+Vue.prototype.$moment = moment
 Vue.prototype.$Host = 'http://localhost:3000/api'
-Vue.prototype.$axios = 'http://localhost:3000/api'
+Vue.prototype.$axios = axios
 const router = new VueRouter({
   routes
 })

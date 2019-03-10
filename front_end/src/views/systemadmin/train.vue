@@ -7,45 +7,44 @@
 					<el-input v-model="filters.name" placeholder="姓名"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+					<el-button type="primary" v-on:click="queryGroup">查询</el-button>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="handleAdd">新增</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
-
 		<!--列表-->
-		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+		<el-table :data="tableData" highlight-current-row v-loading="listLoading" style="width: 100%;">
 			<!-- <el-table-column type="selection" width="55">
-			</el-table-column> -->
+				</el-table-column> -->
 			<el-table-column type="index" width="60">
 			</el-table-column>
-			<el-table-column prop="name" label="培训名称" width="120" >
+			<el-table-column prop="name" label="培训名称" width="120">
 			</el-table-column>
-			<el-table-column prop="sex" label="培训开始时间" width="120" :formatter="formatSex" >
+			<el-table-column prop="sex" label="培训开始时间" width="120" :formatter="formatSex">
 			</el-table-column>
-			<el-table-column prop="orderNumber" label="培训结束时间" width="120" :formatter="formatSex" >
+			<el-table-column prop="orderNumber" label="培训结束时间" width="120" :formatter="formatSex">
 			</el-table-column>
-			<el-table-column prop="phone" label="培训类型" width="100"  >
+			<el-table-column prop="phone" label="培训类型" width="100">
 			</el-table-column>
-			<el-table-column prop="salary" label="培训地点" width="150"  >
+			<el-table-column prop="salary" label="培训地点" width="150">
 			</el-table-column>
-			<el-table-column prop="age" label="培训人" width="100" >
+			<el-table-column prop="age" label="培训人" width="100">
 			</el-table-column>
-			<el-table-column prop="addr" label="培训人所在单位" min-width="180" >
+			<el-table-column prop="addr" label="培训人所在单位" min-width="180">
 			</el-table-column>
-			<el-table-column prop="addr" label="培训人数" min-width="180" >
+			<el-table-column prop="addr" label="培训人数" min-width="180">
 			</el-table-column>
-			<el-table-column prop="addr" label="培训内容" min-width="180" >
+			<el-table-column prop="addr" label="培训内容" min-width="180">
 			</el-table-column>
-			<el-table-column prop="memo" label="备注" min-width="180" >
+			<el-table-column prop="memo" label="备注" min-width="180">
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-				</template>
+						<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+						<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+</template>
 			</el-table-column>
 		</el-table>
 
@@ -117,26 +116,32 @@
 <script>
 	import util from '../../common/js/util'
 	//import NProgress from 'nprogress'
-	import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api';
-
+	import {
+		getUserListPage,
+		removeUser,
+		batchRemoveUser,
+		editUser,
+		addUser
+	} from '../../api/api';
 	export default {
 		data() {
 			return {
 				filters: {
 					name: ''
 				},
-				users: [],
+				tableData: [],
 				total: 0,
 				page: 1,
 				listLoading: false,
-				sels: [],//列表选中列
-
-				editFormVisible: false,//编辑界面是否显示
+				sels: [], //列表选中列
+				editFormVisible: false, //编辑界面是否显示
 				editLoading: false,
 				editFormRules: {
-					name: [
-						{ required: true, message: '请输入姓名', trigger: 'blur' }
-					]
+					name: [{
+						required: true,
+						message: '请输入姓名',
+						trigger: 'blur'
+					}]
 				},
 				//编辑界面数据
 				editForm: {
@@ -147,13 +152,14 @@
 					birth: '',
 					addr: ''
 				},
-
-				addFormVisible: false,//新增界面是否显示
+				addFormVisible: false, //新增界面是否显示
 				addLoading: false,
 				addFormRules: {
-					name: [
-						{ required: true, message: '请输入姓名', trigger: 'blur' }
-					]
+					name: [{
+						required: true,
+						message: '请输入姓名',
+						trigger: 'blur'
+					}]
 				},
 				//新增界面数据
 				addForm: {
@@ -163,41 +169,49 @@
 					birth: '',
 					addr: ''
 				}
-
 			}
+		},
+		created: function() {
+			this.queryGroup()
 		},
 		methods: {
 			//性别显示转换
-			formatSex: function (row, column) {
+			formatSex: function(row, column) {
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
 			},
 			handleCurrentChange(val) {
 				this.page = val;
-				this.getUsers();
+				this.queryGroup();
 			},
-			//获取用户列表
-			getUsers() {
-				let para = {
-					page: this.page,
-					name: this.filters.name
-				};
+			//获取培训列表
+			queryGroup() {
+				let that = this
 				this.listLoading = true;
-				//NProgress.start();
-				getUserListPage(para).then((res) => {
-					this.total = res.data.total;
-					this.users = res.data.users;
-					this.listLoading = false;
-					//NProgress.done();
-				});
+				let url = this.$Host + '/employee'
+				this.$axios.get(url)
+					.then((res) => {
+						that.listLoading = false
+						if (res.data.success) {
+							res.data.data.forEach(item => {
+								item.time = this.$moment(item.time).format('MM-DD HH:mm:ss')
+								that.tableData.push(item)
+							})
+						}
+					})
+					.catch(err => {
+						console.error(err)
+					});
 			},
 			//删除
-			handleDel: function (index, row) {
+			handleDel: function(index, row) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => {
 					this.listLoading = true;
 					//NProgress.start();
-					let para = { id: row.id };
+					let para = {
+						id: row.id
+					};
 					removeUser(para).then((res) => {
 						this.listLoading = false;
 						//NProgress.done();
@@ -205,19 +219,18 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.queryGroup();
 					});
 				}).catch(() => {
-
 				});
 			},
 			//显示编辑界面
-			handleEdit: function (index, row) {
+			handleEdit: function(index, row) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面
-			handleAdd: function () {
+			handleAdd: function() {
 				this.addFormVisible = true;
 				this.addForm = {
 					name: '',
@@ -228,7 +241,7 @@
 				};
 			},
 			//编辑
-			editSubmit: function () {
+			editSubmit: function() {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -245,14 +258,14 @@
 								});
 								this.$refs['editForm'].resetFields();
 								this.editFormVisible = false;
-								this.getUsers();
+								this.queryGroup();
 							});
 						});
 					}
 				});
 			},
 			//新增
-			addSubmit: function () {
+			addSubmit: function() {
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
@@ -269,24 +282,26 @@
 								});
 								this.$refs['addForm'].resetFields();
 								this.addFormVisible = false;
-								this.getUsers();
+								this.queryGroup();
 							});
 						});
 					}
 				});
 			},
-			selsChange: function (sels) {
+			selsChange: function(sels) {
 				this.sels = sels;
 			},
 			//批量删除
-			batchRemove: function () {
+			batchRemove: function() {
 				var ids = this.sels.map(item => item.id).toString();
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => {
 					this.listLoading = true;
 					//NProgress.start();
-					let para = { ids: ids };
+					let para = {
+						ids: ids
+					};
 					batchRemoveUser(para).then((res) => {
 						this.listLoading = false;
 						//NProgress.done();
@@ -294,18 +309,13 @@
 							message: '删除成功',
 							type: 'success'
 						});
-						this.getUsers();
+						this.queryGroup();
 					});
 				}).catch(() => {
-
 				});
 			}
 		},
-		mounted() {
-			this.getUsers();
-		}
 	}
-
 </script>
 
 <style scoped>
