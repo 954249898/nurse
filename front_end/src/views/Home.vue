@@ -110,9 +110,8 @@
 			logout: function () {
 				var _this = this;
 				this.$confirm('确认退出吗?', '提示', {
-					//type: 'warning'
 				}).then(() => {
-					sessionStorage.removeItem('user');
+					sessionStorage.removeItem('USER-INFO');
 					_this.$router.push('/login');
 				}).catch(() => {
 
@@ -142,7 +141,6 @@
 </script>
 
 <style scoped lang="scss">
-	@import '~scss_vars';
 	
 	.container {
 		position: absolute;
@@ -152,7 +150,7 @@
 		.header {
 			height: 60px;
 			line-height: 60px;
-			background: $color-primary;
+			background: #20a0ff;
 			color:#fff;
 			.userinfo {
 				text-align: right;

@@ -3,7 +3,8 @@ let Schema = mongoose.Schema;
 
 let time = new Date()
 let order_schema = new Schema({
-    name: {type: String, default: ''},//姓名
+    name: {type: String, default: ''},//服务人员姓名
+    customerNm: {type: String, default: ''},//顾客姓名
     status: {type: Number, default: 1},//状态
     phone: {type: String, default: ''},//护工手机号
     time:{type: Date, default: time},//预约时间

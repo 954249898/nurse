@@ -4,7 +4,8 @@ let order_model = db.model('order', order_schema)
 
 
 let queryGroup = function (req, res, next) {
-    order_model.find({}).sort({name: 'asc'}).exec(
+    let params = req.query.name ? {name:req.query.name} : {}
+    order_model.find(params).sort({name: 'asc'}).exec(
         function (err, data) {
             if (err) {
                 res.json({success: false, errMsg: err})
@@ -37,6 +38,14 @@ let addLib = function (req, res, next) {
     })
 }
 let deleteLib = function (req, res, next) {
+    let id = req.query.id
+    order_model.remove({_id:id}, function (err, data) {
+        if (err) {
+            res.json({success: false, errMsg: err})
+            return
+        }
+        res.json({success: true, data: data})
+    })
 }
 
 module.exports = {

@@ -13,6 +13,14 @@ let queryGroup = function (req, res, next) {
     })
 }
 let updateLib = function (req, res, next) {
+    let data = req.body
+    notification_model.findByIdAndUpdate(data._id,data,function (err,data) {
+        if (err) {
+            res.json({success: false, errMsg: err})
+            return
+        }
+        res.json({success: true, data: data})
+    })
 }
 let addLib = function (req, res, next) {
     let data = req.body
@@ -25,7 +33,14 @@ let addLib = function (req, res, next) {
     })
 }
 let deleteLib = function (req, res, next) {
-
+    let id = req.query.id
+    notification_model.remove({_id:id}, function (err, result) {
+        if (err) {
+            res.json({success: false, errMsg: err})
+            return
+        }
+        res.json({success: true, data: result})
+    })
 }
 
 module.exports = {

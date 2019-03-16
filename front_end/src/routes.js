@@ -5,10 +5,11 @@ import Work from './views/systemadmin/work.vue'
 import Incentive from './views/systemadmin/incentive.vue'
 import Train from './views/systemadmin/train.vue'
 import Order from './views/order/index.vue'
-import Empployee from './views/employeeinfo/index.vue'
+import EmployeeInfo from './views/employeeinfo/index.vue'
 import Notification from './views/notification/index.vue'
 import Statistics from './views/statistics/index.vue'
 import Customer from './views/Customer.vue'
+import Employee from './views/Employee.vue'
 
 let routes = [
     {
@@ -36,6 +37,13 @@ let routes = [
         name: '',
         hidden: true
     },
+    {
+        path: '/employee',
+        component: Employee,
+        role: 3,
+        name: '',
+        hidden: true
+    },
     
     {
         path: '/',
@@ -44,6 +52,7 @@ let routes = [
         iconCls: 'fa fa-address-card',
         leaf: true,//只有一个节点
         role: 1,
+        redirect:"/order",
         children: [
             { path: '/order', component: Order, name: '订单管理' },
         ]
@@ -56,7 +65,7 @@ let routes = [
         leaf: true,//只有一个节点
         role: 1,
         children: [
-            { path: '/nursing/info', component: Empployee, name: '护工信息' },
+            { path: '/nursing/info', component: EmployeeInfo, name: '护工信息' },
         ]
     },
     {

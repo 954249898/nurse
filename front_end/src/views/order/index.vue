@@ -29,14 +29,13 @@
 			</el-table-column>
 			<el-table-column prop="memo" label="备注" min-width="120">
 			</el-table-column>
-			<el-table-column label="操作" width="150">
+			<el-table-column label="操作" width="150" align="center">
 				<template scope="scope">
-															<el-button size="small" @click="sendOrder(scope.$index, scope.row)">发送</el-button>
-															<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-</template>
+						<el-button size="small" @click="sendOrder(scope.$index, scope.row)">发送</el-button>
+						<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+				</template>
 			</el-table-column>
 		</el-table>
-
 		<el-col :span="24" class="toolbar">
 			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
 			</el-pagination>
@@ -90,22 +89,18 @@
 			//删除
 			handleDel: function(index, row) {
 				let that = this
-				let url = this.$Host + '/order'
+				let url = this.$Host + '/order?id=' + row._id
 				this.$confirm('确认删除该订单吗?', '提示', {
 					type: 'warning'
 				}).then((action) => {
 					this.listLoading = true;
 					if (action == 'confirm') {
-						let data = {
-							status: 2,
-							id: row._id
-						}
-						that.$axios.delete(url, data)
+						that.$axios.delete(url)
 							.then((res) => {
 								if (res.data.success) {
 									that.$message({
 										type: 'info',
-										message: `订单发送成功`
+										message: `订单删除成功`
 									});
 									that.orderList = []
 									that.queryGroup()

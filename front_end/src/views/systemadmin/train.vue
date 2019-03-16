@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section id="train">
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
@@ -17,97 +17,118 @@
 		<!--列表-->
 		<el-table :data="tableData" highlight-current-row v-loading="listLoading" style="width: 100%;">
 			<!-- <el-table-column type="selection" width="55">
-				</el-table-column> -->
+													</el-table-column> -->
 			<el-table-column type="index" width="60">
 			</el-table-column>
-			<el-table-column prop="name" label="培训名称" width="120">
+			<el-table-column prop="trainName" label="培训名称" width="120">
 			</el-table-column>
-			<el-table-column prop="sex" label="培训开始时间" width="120" :formatter="formatSex">
+			<el-table-column prop="sTime" label="培训开始时间" width="120">
 			</el-table-column>
-			<el-table-column prop="orderNumber" label="培训结束时间" width="120" :formatter="formatSex">
+			<el-table-column prop="eTime" label="培训结束时间" width="120">
 			</el-table-column>
-			<el-table-column prop="phone" label="培训类型" width="100">
+			<el-table-column prop="type" label="培训类型" width="100">
 			</el-table-column>
-			<el-table-column prop="salary" label="培训地点" width="150">
+			<el-table-column prop="address" label="培训地点" width="150">
 			</el-table-column>
-			<el-table-column prop="age" label="培训人" width="100">
+			<el-table-column prop="trainer" label="培训人" width="100">
 			</el-table-column>
-			<el-table-column prop="addr" label="培训人所在单位" min-width="180">
+			<el-table-column prop="unit" label="培训人所在单位" min-width="180">
 			</el-table-column>
-			<el-table-column prop="addr" label="培训人数" min-width="180">
+			<el-table-column prop="number" label="培训人数" min-width="180">
 			</el-table-column>
-			<el-table-column prop="addr" label="培训内容" min-width="180">
+			<el-table-column prop="content" label="培训内容" min-width="180">
 			</el-table-column>
 			<el-table-column prop="memo" label="备注" min-width="180">
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
-						<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-						<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+													<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+													<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 </template>
 			</el-table-column>
 		</el-table>
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<!-- <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button> -->
-			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+			<el-pagination layout="prev, pager, next" :page-size="20" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
-
-		<!--编辑界面-->
-		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
-			<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="姓名" prop="name">
-					<el-input v-model="editForm.name" auto-complete="off"></el-input>
+         <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+			<el-form :model="editForm" label-width="120px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="培训名称" prop="trainName">
+					<el-input v-model="editForm.trainName" auto-complete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="editForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
+				<el-form-item label="培训开始时间" prop="startTime">
+					 <el-date-picker v-model="editForm.startTime"  type="datetime"  placeholder="选择日期"></el-date-picker>
 				</el-form-item>
-				<el-form-item label="年龄">
-					<el-input-number v-model="editForm.age" :min="0" :max="200"></el-input-number>
+				<el-form-item label="培训结束时间" prop="endTime">
+					 <el-date-picker v-model="editForm.endTime"  type="datetime"  placeholder="选择日期"></el-date-picker>
 				</el-form-item>
-				<el-form-item label="手机号">
-					<el-input type="textarea" v-model="editForm.addr"></el-input>
+				<el-form-item label="培训类型"  prop="type">
+					<el-input type="text" v-model="editForm.type"></el-input>
 				</el-form-item>
-				<el-form-item label="地址">
-					<el-input type="textarea" v-model="editForm.addr"></el-input>
+				<el-form-item label="培训地点"  prop="address">
+					<el-input type="text" v-model="editForm.address"></el-input>
+				</el-form-item>
+				<el-form-item label="培训人数" prop="number">
+					<el-input type="text" v-model="editForm.number"></el-input>
+				</el-form-item>
+				<el-form-item label="培训人所在单位" prop="unit">
+					<el-input type="text" v-model="editForm.unit"></el-input>
+				</el-form-item>
+				<el-form-item label="培训人" prop="trainer">
+					<el-input type="text" v-model="editForm.trainer"></el-input>
+				</el-form-item>
+				<el-form-item label="培训内容" prop="content">
+					<el-input type="text" v-model="editForm.content"></el-input>
+				</el-form-item>
+				<el-form-item label="备注" prop="memo">
+					<el-input type="text" v-model="editForm.memo"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click.native="editFormVisible = false">取消</el-button>
-				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+				<el-button type="primary" @click.native="editSubmit">提交</el-button>
 			</div>
 		</el-dialog>
 
 		<!--新增界面-->
-		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-				<el-form-item label="姓名" prop="name">
-					<el-input v-model="addForm.name" auto-complete="off"></el-input>
+		<el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
+			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
+				<el-form-item label="培训名称" prop="trainName">
+					<el-input v-model="addForm.trainName" auto-complete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="addForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
+				<el-form-item label="培训开始时间" prop="startTime">
+					 <el-date-picker v-model="addForm.startTime"  type="datetime"  placeholder="选择日期"></el-date-picker>
 				</el-form-item>
-				<el-form-item label="年龄">
-					<el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
+				<el-form-item label="培训结束时间" prop="endTime">
+					 <el-date-picker v-model="addForm.endTime"  type="datetime"  placeholder="选择日期"></el-date-picker>
 				</el-form-item>
-				<el-form-item label="手机号">
-					<el-input type="text" v-model="editForm.addr"></el-input>
+				<el-form-item label="培训类型"  prop="type">
+					<el-input type="text" v-model="addForm.type"></el-input>
 				</el-form-item>
-				<el-form-item label="地址">
-					<el-input type="textarea" v-model="addForm.addr"></el-input>
+				<el-form-item label="培训地点"  prop="address">
+					<el-input v-model="addForm.address" auto-complete="off"></el-input>
+				</el-form-item>
+				<el-form-item label="培训人数" prop="number">
+					<el-input-number v-model="addForm.number" :min="0"  label="描述文字"></el-input-number>
+				</el-form-item>
+				<el-form-item label="培训人所在单位" prop="unit">
+					<el-input type="text" v-model="addForm.unit"></el-input>
+				</el-form-item>
+				<el-form-item label="培训人" prop="trainer">
+					<el-input type="text" v-model="addForm.trainer"></el-input>
+				</el-form-item>
+				<el-form-item label="培训内容" prop="content">
+					<el-input type="text" v-model="addForm.content"></el-input>
+				</el-form-item>
+				<el-form-item label="备注" prop="memo">
+					<el-input type="text" v-model="addForm.memo"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click.native="addFormVisible = false">取消</el-button>
-				<el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
+				<el-button type="primary" @click.native="addSubmit">提交</el-button>
 			</div>
 		</el-dialog>
 	</section>
@@ -116,13 +137,6 @@
 <script>
 	import util from '../../common/js/util'
 	//import NProgress from 'nprogress'
-	import {
-		getUserListPage,
-		removeUser,
-		batchRemoveUser,
-		editUser,
-		addUser
-	} from '../../api/api';
 	export default {
 		data() {
 			return {
@@ -133,41 +147,67 @@
 				total: 0,
 				page: 1,
 				listLoading: false,
-				sels: [], //列表选中列
 				editFormVisible: false, //编辑界面是否显示
-				editLoading: false,
 				editFormRules: {
-					name: [{
+					startTime: [{
 						required: true,
-						message: '请输入姓名',
+						message: '请输入培训开始时间',
+						trigger: 'blur'
+					}],
+					endTime: [{
+						required: true,
+						message: '请输入培训结束时间',
+						trigger: 'blur'
+					}],
+					trainName: [{
+						required: true,
+						message: '请输入培训名称',
 						trigger: 'blur'
 					}]
 				},
 				//编辑界面数据
 				editForm: {
-					id: 0,
-					name: '',
-					sex: -1,
-					age: 0,
-					birth: '',
-					addr: ''
+					trainName: '',
+					type: '',
+					address: '',
+					startTime: '',
+					endTime: '',
+					trainer: '',
+					unit: '',
+					number: '',
+					content: '',
+					memo: ''
 				},
 				addFormVisible: false, //新增界面是否显示
-				addLoading: false,
 				addFormRules: {
-					name: [{
+					trainName: [{
 						required: true,
-						message: '请输入姓名',
+						message: '请输入培训名称',
 						trigger: 'blur'
-					}]
+					}],
+					startTime: [{
+						required: true,
+						message: '请输入培训开始时间',
+						trigger: 'blur'
+					}],
+					endTime: [{
+						required: true,
+						message: '请输入培训结束时间',
+						trigger: 'blur'
+					}],
 				},
 				//新增界面数据
 				addForm: {
-					name: '',
-					sex: -1,
-					age: 0,
-					birth: '',
-					addr: ''
+					trainName: '',
+					type: '',
+					address: '',
+					startTime: '',
+					endTime: '',
+					trainer: '',
+					unit: '',
+					number: '',
+					content: '',
+					memo: ''
 				}
 			}
 		},
@@ -175,25 +215,19 @@
 			this.queryGroup()
 		},
 		methods: {
-			//性别显示转换
-			formatSex: function(row, column) {
-				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
-			},
-			handleCurrentChange(val) {
-				this.page = val;
-				this.queryGroup();
-			},
 			//获取培训列表
 			queryGroup() {
 				let that = this
 				this.listLoading = true;
-				let url = this.$Host + '/employee'
+				let url = this.$Host + '/train'
 				this.$axios.get(url)
 					.then((res) => {
 						that.listLoading = false
+						that.tableData = []
 						if (res.data.success) {
 							res.data.data.forEach(item => {
-								item.time = this.$moment(item.time).format('MM-DD HH:mm:ss')
+								item.sTime = this.$moment(item.startTime).format('MM-DD HH:mm:ss')
+								item.eTime = this.$moment(item.endTime).format('MM-DD HH:mm:ss')
 								that.tableData.push(item)
 							})
 						}
@@ -204,25 +238,25 @@
 			},
 			//删除
 			handleDel: function(index, row) {
+				let that = this
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => {
-					this.listLoading = true;
-					//NProgress.start();
-					let para = {
-						id: row.id
-					};
-					removeUser(para).then((res) => {
-						this.listLoading = false;
-						//NProgress.done();
-						this.$message({
-							message: '删除成功',
-							type: 'success'
+					let url = this.$Host + '/train?id=' + row._id
+					this.$axios.delete(url)
+						.then((res) => {
+							if (res.data.success) {
+								that.$message.success('数据删除成功!')
+								that.queryGroup()
+							} else {
+								that.$message.warning('数据删除失败!')
+							}
+						})
+						.catch(err => {
+							that.$message.warning('数据删除失败!')
+							console.error(err)
 						});
-						this.queryGroup();
-					});
-				}).catch(() => {
-				});
+				}).catch(() => {});
 			},
 			//显示编辑界面
 			handleEdit: function(index, row) {
@@ -233,91 +267,76 @@
 			handleAdd: function() {
 				this.addFormVisible = true;
 				this.addForm = {
-					name: '',
-					sex: -1,
-					age: 0,
-					birth: '',
-					addr: ''
+					trainName: '',
+					type: '',
+					address: '',
+					startTime: '',
+					endTime: '',
+					trainer: '',
+					unit: '',
+					number: '',
+					content: '',
+					memo: ''
 				};
 			},
 			//编辑
 			editSubmit: function() {
+				let that = this
+				let url = this.$Host + '/train'
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							this.editLoading = true;
 							//NProgress.start();
 							let para = Object.assign({}, this.editForm);
-							para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-							editUser(para).then((res) => {
-								this.editLoading = false;
-								//NProgress.done();
-								this.$message({
-									message: '提交成功',
-									type: 'success'
-								});
-								this.$refs['editForm'].resetFields();
-								this.editFormVisible = false;
-								this.queryGroup();
-							});
+							that.$axios.put(url, para)
+								.then(res => {
+									if (res.data.success) {
+										that.editFormVisible = false
+										that.$message.success('修改成功！')
+										that.queryGroup()
+									} else {
+										that.$message.warning('修改失败！')
+									}
+								})
+								.catch(err => {
+									console.log(err)
+								})
 						});
 					}
 				});
 			},
 			//新增
 			addSubmit: function() {
+				let that = this
+				let url = this.$Host + '/train'
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							this.addLoading = true;
-							//NProgress.start();
 							let para = Object.assign({}, this.addForm);
-							para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-							addUser(para).then((res) => {
-								this.addLoading = false;
-								//NProgress.done();
-								this.$message({
-									message: '提交成功',
-									type: 'success'
-								});
-								this.$refs['addForm'].resetFields();
-								this.addFormVisible = false;
-								this.queryGroup();
-							});
+							that.$axios.post(url, para)
+								.then(res => {
+									if (res.data.success) {
+										that.addFormVisible = false
+										that.$message.success('新增成功！')
+										that.queryGroup()
+									} else {
+										that.$message.warning('新增失败！')
+									}
+								})
+								.catch(err => {
+									console.log(err)
+								})
 						});
 					}
 				});
 			},
-			selsChange: function(sels) {
-				this.sels = sels;
-			},
-			//批量删除
-			batchRemove: function() {
-				var ids = this.sels.map(item => item.id).toString();
-				this.$confirm('确认删除选中记录吗？', '提示', {
-					type: 'warning'
-				}).then(() => {
-					this.listLoading = true;
-					//NProgress.start();
-					let para = {
-						ids: ids
-					};
-					batchRemoveUser(para).then((res) => {
-						this.listLoading = false;
-						//NProgress.done();
-						this.$message({
-							message: '删除成功',
-							type: 'success'
-						});
-						this.queryGroup();
-					});
-				}).catch(() => {
-				});
-			}
 		},
 	}
 </script>
 
-<style scoped>
-
+<style>
+	#train /deep/ .el-dialog__body {
+		height: 400px !important;
+		overflow: auto;
+	}
 </style>

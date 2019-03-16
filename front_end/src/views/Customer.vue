@@ -7,6 +7,9 @@
             </div>
             <div>
                 <el-form ref="form" :model="form" label-width="80px">
+                    <el-form-item label="姓名">
+                        <el-input v-model="form.customerNm"></el-input>
+                    </el-form-item>
                     <el-form-item label="项目名称">
                         <el-input v-model="form.item"></el-input>
                     </el-form-item>
@@ -24,7 +27,7 @@
                     </el-form-item>
                     <el-form-item label="服务人员">
                         <el-select v-model="form.name" placeholder="请选择服务人员" @change="handleSelect">
-                            <el-option :label="item.name" :value="item" v-for="item in serverList"></el-option>
+                            <el-option :label="item.name" :value="item" v-for="item in serverList" :key="item"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
@@ -41,7 +44,7 @@
         data() {
             return {
                 form: {
-                    name:'test2',
+                    name:'',
                     phone:'18851140111'
                 },
                 serverList: []
@@ -64,11 +67,13 @@
                     .then((res) => {
                         if (res.data.success) {
                             res.data.data.forEach(item=>{
-                                let obj = {
+                                if(item.role ==2){
+                                    let obj = {
                                     name:item.name,
                                     phone:item.phone
                                 }
                                 that.serverList.push(obj)
+                                }
                             })
                         }
                     })

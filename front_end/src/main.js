@@ -24,15 +24,42 @@ const router = new VueRouter({
 
 //全局路由导航
 router.beforeEach((to, from, next) => {
-  // if (to.path == '/login') {
-  //   sessionStorage.removeItem('user');
-  // }
   let user = JSON.parse(sessionStorage.getItem('USER-INFO'));
+  let role = user && user.role ? Number(user.role) : null
+   //未登录为顾客情况（顾客不用登陆）
+   if(to.path =='/customer'){
+    next()
+    return
+  }
+  //未登录情况
   if (!user && to.path != '/login') {
     next({ path: '/login' })
-  } else {
-    next()
+    return
+  } 
+  //登录情况
+  if(user && role && to.path == '/login'){
+    next({path:'/order'})
+    return
   }
+  //登录
+  if(user && to.path != '/login' && to.path !='/error'){
+    //护工
+    if(role==2 && to.path!='/employee'){
+      next({path:'/error'})
+      return
+    }
+    // //顾客
+    // if(role==3 && to.path!='customer'){
+    //   next({path:'/customer'})
+    //   return
+    // }
+    next()
+    return
+  }else{
+    next()
+    return
+  }
+ next()
 })
 
 new Vue({

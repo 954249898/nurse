@@ -16,9 +16,6 @@
 </template>
 
 <script>
-  import {
-    requestLogin
-  } from '../api/api';
   //import NProgress from 'nprogress'
   export default {
     data() {
@@ -54,9 +51,11 @@
       submit(ev) {
         let _this = this;
         let url = this.$Host + '/login'
+        sessionStorage.setItem('USER-INFO', JSON.stringify({
+          role: 1
+        })); //TODO:
         this.$refs.ruleForm2.validate((valid) => {
           if (valid) {
-            //_this.$router.replace('/table');
             this.logining = true;
             var data = {
               name: this.ruleForm2.account,
@@ -66,30 +65,31 @@
               this.logining = false;
               let userInfo = res.data.data;
               if (!res.data.success) {
+                _this.$message.error('用户名或密码错误!')
                 console.log(res.data.errMsg)
               } else {
                 sessionStorage.setItem('USER-INFO', JSON.stringify(userInfo));
                 //管理员账号
-                debugger
                 if (userInfo.role && userInfo.role == 1) {
-                  this.$router.push({
+                  _this.$router.push({
                     path: '/order'
                   });
                 }
                 //顾客账号
                 if (userInfo.role && userInfo.role == 3) {
-                  this.$router.push({
+                  _this.$router.push({
                     path: '/customer'
                   });
                 }
                 //员工账号
                 if (userInfo.role && userInfo.role == 2) {
-                  this.$router.push({
+                  _this.$router.push({
                     path: '/employee'
                   });
                 }
               }
             }).catch(err => {
+              _this.$message.error('请求出错!')
               console.log(err)
             });
           } else {
