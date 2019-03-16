@@ -24,23 +24,23 @@ let updateLib = function (req, res, next) {
 }
 let addLib = function (req, res, next) {
     let data = req.body
-    employee_model.find({name:data.name},function (err,data) {
+    employee_model.find({name:data.name},function (err,result) {
         if(err){
             res.json({success:false,errMsg:err})
             return
         }
         console.log('===========================')
-        console.log(data)
+        console.log(result)
         if(data.length > 0){
             res.json({success:false,errMsg:'用户名已存在!'})
             return
         }
-        employee_model.create(data, function (err, result) {
+        employee_model.create(data, function (err, addResult) {
             if (err) {
                 res.json({success: false, errMsg: err})
                 return
             }
-            res.json({success: true, data: result})
+            res.json({success: true, data: addResult})
         })
     })
 }

@@ -15,7 +15,9 @@
 		<el-table :data="orderList" highlight-current-row v-loading="listLoading" style="width: 100%;">
 			<el-table-column type="index" width="60">
 			</el-table-column>
-			<el-table-column prop="name" label="姓名" width="120">
+			<el-table-column prop="name" label="服务人员" width="120">
+			</el-table-column>
+			<el-table-column prop="customerNm" label="顾客姓名" width="120">
 			</el-table-column>
 			<el-table-column prop="phone" label="手机号" width="120">
 			</el-table-column>

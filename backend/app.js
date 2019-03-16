@@ -4,15 +4,17 @@ let handleerror = require('http-errors')
 var logger = require('morgan');
 var indexrouter = require('./router/index');
 
-app.all("*", function (req, res, next) {
-    //设置允许跨域的域名，*代表允许任意域名跨域
-    res.header("access-control-allow-origin", "*");
-    //允许的header类型
-    res.header("access-control-allow-headers", "content-type");
-    //跨域允许的请求方式
-    res.header("access-control-allow-methods", "delete,put,post,get,options");
-    next();
-})
+//设置跨域访问 TODO:
+app.all('*',function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    if (req.method == 'OPTIONS') {
+        res.send(200); /让options请求快速返回/
+    }else {
+        next();
+    }
+});
 
 app.use(logger('dev'));
 app.use(express.json());

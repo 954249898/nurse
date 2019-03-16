@@ -22,9 +22,9 @@
 			</el-table-column>
 			<el-table-column prop="name" label="员工姓名" width="120">
 			</el-table-column>
-			<el-table-column prop="date" label="奖惩时间" width="120" :formatter="formatSex">
+			<el-table-column prop="t" label="奖惩时间" width="120">
 			</el-table-column>
-			<el-table-column prop="type" label="奖惩类型" width="120" :formatter="formatSex">
+			<el-table-column prop="type" label="奖惩类型" width="120">
 			</el-table-column>
 			<el-table-column prop="money" label="奖惩金额" width="150">
 			</el-table-column>
@@ -178,7 +178,7 @@
 						that.listLoading = false
 						if (res.data.success) {
 							res.data.data.forEach(item => {
-								item.time = this.$moment(item.time).format('MM-DD HH:mm:ss')
+								item.t = this.$moment(item.time).format('MM-DD HH:mm:ss')
 								that.tableData.push(item)
 							})
 						}
